@@ -1,3 +1,0 @@
-FROM mongo:4.2.8
-
-COPY create-user.js /docker-entrypoint-initdb.d/
