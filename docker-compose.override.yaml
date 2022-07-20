@@ -1,0 +1,21 @@
+version: "3.7"
+#List of networks for Docker-Compose
+networks:
+  maxminded-ntw-compose:
+    external:
+      name: maxminded-ntw-compose
+
+#service template
+x-mongodb:
+  &mongodb
+  networks:
+    - maxminded-ntw-compose
+
+#this config is automatically applied when using docker compose up
+services:
+  mongo1:
+    <<: *mongodb
+  mongo2:
+    <<: *mongodb
+  mongo3:
+    <<: *mongodb

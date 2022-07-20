@@ -1,0 +1,68 @@
+version: "3.7"
+
+#service template
+x-mongodb:
+  &mongodb
+  environment:
+    MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/MONGO_INITDB_ROOT_USERNAME_FILE
+    MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/MONGO_INITDB_ROOT_PASSWORD_FILE
+    MONGO_DB_ADMIN_USERNAME_FILE: /run/secrets/MONGO_DB_ADMIN_USERNAME_FILE
+    MONGO_DB_ADMIN_PASSWORD_FILE: /run/secrets/MONGO_DB_ADMIN_PASSWORD_FILE
+    MONGO_REPLICA_ADMIN_USERNAME_FILE: /run/secrets/MONGO_REPLICA_ADMIN_USERNAME_FILE
+    MONGO_REPLICA_ADMIN_PASSWORD_FILE: /run/secrets/MONGO_REPLICA_ADMIN_PASSWORD_FILE
+    MONGO_USER_USERNAME_FILE: /run/secrets/MONGO_USER_USERNAME_FILE
+    MONGO_USER_PASSWORD_FILE: /run/secrets/MONGO_USER_PASSWORD_FILE
+  networks:
+    - maxminded-ntw-swarm
+
+#docker network create -d overlay --attachable maxminded-ntw-swarm
+#docker stack up -c docker.yaml app --with-registry-auth
+
+#List of networks for Docker Swarm
+networks:
+  maxminded-ntw-swarm:
+    external:
+      name: maxminded-ntw-swarm
+
+#List of secrets for Docker Swarm
+secrets:
+  MONGO_INITDB_ROOT_USERNAME_FILE:
+    external: true
+  MONGO_INITDB_ROOT_PASSWORD_FILE:
+    external: true
+  MONGO_DB_ADMIN_USERNAME_FILE:
+    external: true
+  MONGO_DB_ADMIN_PASSWORD_FILE:
+    external: true
+  MONGO_REPLICA_ADMIN_USERNAME_FILE:
+    external: true
+  MONGO_REPLICA_ADMIN_PASSWORD_FILE:
+    external: true
+  MONGO_USER_USERNAME_FILE:
+    external: true
+  MONGO_USER_PASSWORD_FILE:
+    external: true
+
+#list of services
+services:
+  mongo1:
+    <<: *mongodb
+    deploy:
+      placement:
+        constraints:
+          - node.labels.volume == True
+          - node.labels.mongo.replica == 1
+  mongo2:
+    <<: *mongodb
+    deploy:
+      placement:
+        constraints:
+          - node.labels.volume == True
+          - node.labels.mongo.replica == 2
+  mongo3:
+    <<: *mongodb
+    deploy:
+      placement:
+        constraints:
+          - node.labels.volume == True
+          - node.labels.mongo.replica == 3
