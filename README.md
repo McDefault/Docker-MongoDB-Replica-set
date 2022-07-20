@@ -1,5 +1,13 @@
 # MongoDB Replica set
+#### How to deploy a high available mongoDB Replica set (Cluster) on Docker Swarm and Docker Compose. Including authentication
 
+#### Stack:
+- `mongoDB 5.0`
+- `Docker 20.10.12`
+- `Docker Compose 3.7`
+- Docker Swarm with 3 manager nodes
+
+![replication](https://webimages.mongodb.com/_com_assets/cms/mongodb-replication-pnxoiu53rz.svg?auto=format%2Ccompress)
 ## Setup
 
 Before using the MongoDB Replicate set, one must first follow initialisation steps:
@@ -134,3 +142,31 @@ Repeat for all other wanted secrets
 ### Run Swarm stack file
 
 Run `docker stack up -c prod.yaml app --with-registry-auth` to run the stack.
+
+
+### Keyfile Security
+
+- Todo implement x.509 certificates
+ 
+> _Keyfiles are bare-minimum forms of security and are best suited for testing or development 
+> environments. For production environments we recommend using x.509 certificates.
+> [Source](https://www.mongodb.com/docs/v5.0/tutorial/deploy-replica-set-with-keyfile-access-control/#keyfile-security)_
+
+You dont have to worry too much when using a correct Docker Swarm setup with networks. It is still worth noting.
+> _All swarm service management traffic is encrypted by default, using the AES algorithm in GCM mode. Manager nodes in the swarm rotate the key used to encrypt gossip data every 12 hours.
+[Source](https://docs.docker.com/network/overlay/#operations-for-all-overlay-networks)_
+
+## More reading
+- https://university.mongodb.com/
+- https://www.mongodb.com/docs/v5.0/administration/security-checklist/
+- https://www.mongodb.com/blog/post/how-to-avoid-a-malicious-attack-that-ransoms-your-data
+- https://www.mongodb.com/docs/v5.0/tutorial/deploy-replica-set/
+- https://www.mongodb.com/docs/v5.0/tutorial/deploy-replica-set-with-keyfile-access-control/
+- https://www.mongodb.com/docs/v5.0/core/security-internal-authentication/
+- https://www.mongodb.com/docs/v5.0/tutorial/upgrade-keyfile-to-x509/
+- https://www.mongodb.com/docs/v5.0/reference/built-in-roles/#database-user-roles
+- https://www.mongodb.com/docs/v5.0/tutorial/expand-replica-set/#add-a-member-to-an-existing-replica-set
+- https://www.mongodb.com/docs/v5.0/reference/connection-string/#dns-seed-list-connection-format
+- https://docs.docker.com/engine/reference/run/
+- https://docs.docker.com/engine/swarm/
+- https://docs.docker.com/engine/swarm/swarm-tutorial/
