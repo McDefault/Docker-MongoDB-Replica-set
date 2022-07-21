@@ -8,6 +8,8 @@ networks:
 #service template
 x-mongodb:
   &mongodb
+  volumes:
+    - ./entry.js:/docker-entrypoint-initdb.d/entry.js
   networks:
     - maxminded-ntw-compose
 

@@ -43,7 +43,6 @@ services:
       - mongo-data-1:/data/db
       - mongo-config-1:/data/configdb
       - mongo-keyfile:/data/keyfile
-      - ./entry.js:/docker-entrypoint-initdb.d/entry.js
   mongo2:
     <<: *mongodb
     container_name: mongo2
