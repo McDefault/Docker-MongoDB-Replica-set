@@ -170,3 +170,4 @@ You dont have to worry too much when using a correct Docker Swarm setup with net
 - https://docs.docker.com/engine/reference/run/
 - https://docs.docker.com/engine/swarm/
 - https://docs.docker.com/engine/swarm/swarm-tutorial/
+- https://hub.docker.com/_/mongo?tab=description
