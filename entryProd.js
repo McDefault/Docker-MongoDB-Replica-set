@@ -17,11 +17,15 @@ db.auth(mongoRootUser, mongoRootPassword);
 db = db.getSiblingDB(_getEnv("MONGO_INITDB_DATABASE"));
 
 // creation of the admin user
-db.createUser({user: mongoAdminUser, pwd: mongoAdminPassword, roles: [{role: "userAdminAnyDatabase", db: "admin"}]});
+db.createUser({user: mongoAdminUser, pwd: mongoAdminPassword, roles: [{role: "userAdminAnyDatabase", db: _getEnv("MONGO_INITDB_DATABASE")}]});
 // creation of the replica user
-db.createUser({user: mongoReplicaUser, pwd: mongoReplicaPassword, roles: [{role: "clusterAdmin", db: "admin"}]});
+db.createUser({user: mongoReplicaUser, pwd: mongoReplicaPassword, roles: [{role: "clusterAdmin", db: _getEnv("MONGO_INITDB_DATABASE")}]});
+
+// select database
+db = db.getSiblingDB(_getEnv("MONGO_DATABASE"));
+
 // creation of the crud user
-db.createUser({user: mongoUser, pwd: mongoPassword, roles: [{role: "readWrite", db: "admin"}]});
+db.createUser({user: mongoUser, pwd: mongoPassword, roles: [{role: "readWrite", db: _getEnv("MONGO_DATABASE")}]});
 
 // creation of index on snowflake on the guilds collection
 db.guilds.createIndex({"snowflake": 1}, {unique: true})
