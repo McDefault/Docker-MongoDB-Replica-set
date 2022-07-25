@@ -8,6 +8,8 @@ networks:
 #service template
 x-mongodb:
   &mongodb
+  volumes:
+    - ./entry.js:/docker-entrypoint-initdb.d/entry.js
   networks:
     - maxminded-ntw-compose
 
@@ -15,7 +17,11 @@ x-mongodb:
 services:
   mongo1:
     <<: *mongodb
+    container_name: mongo1
   mongo2:
     <<: *mongodb
+    container_name: mongo2
   mongo3:
     <<: *mongodb
+    container_name: mongo3
+

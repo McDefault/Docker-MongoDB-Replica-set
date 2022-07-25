@@ -14,17 +14,9 @@ x-mongodb:
   &mongodb
   image: mongo:5.0.9
   restart: unless-stopped
-  extra_hosts:
-    - "somehost:162.242.195.82"
   labels:
     docker.service: mongodb
   command: --keyFile /data/keyfile/keyfile --replSet 'rs1'
-#  command: mongod --replSet rs1 --oplogSize 3 --keyFile /data/keyfile/keyfile
-  environment:
-    TERM: xterm
-    MONGO_INITDB_ROOT_USERNAME: admin
-    MONGO_INITDB_ROOT_PASSWORD: admin
-    MONGO_INITDB_DATABASE: admin
   deploy:
     replicas: 1
   env_file:
@@ -37,26 +29,19 @@ services:
     <<: *mongodb
     labels:
       docker.service: manager
-    restart: unless-stopped
-    container_name: mongo1
     volumes:
       - mongo-data-1:/data/db
       - mongo-config-1:/data/configdb
       - mongo-keyfile:/data/keyfile
-      - ./entry.js:/docker-entrypoint-initdb.d/entry.js
   mongo2:
     <<: *mongodb
-    container_name: mongo2
     volumes:
       - mongo-data-2:/data/db
       - mongo-config-2:/data/configdb
       - mongo-keyfile:/data/keyfile
-      - ./entry.js:/docker-entrypoint-initdb.d/entry.js
   mongo3:
     <<: *mongodb
-    container_name: mongo3
     volumes:
       - mongo-data-3:/data/db
       - mongo-config-3:/data/configdb
       - mongo-keyfile:/data/keyfile
-      - ./entry.js:/docker-entrypoint-initdb.d/entry.js

@@ -12,8 +12,19 @@ x-mongodb:
     MONGO_REPLICA_ADMIN_PASSWORD_FILE: /run/secrets/MONGO_REPLICA_ADMIN_PASSWORD_FILE
     MONGO_USER_USERNAME_FILE: /run/secrets/MONGO_USER_USERNAME_FILE
     MONGO_USER_PASSWORD_FILE: /run/secrets/MONGO_USER_PASSWORD_FILE
+  volumes:
+    - ./entryProd.js:/docker-entrypoint-initdb.d/entry.js
   networks:
     - maxminded-ntw-swarm
+  secrets:
+    - MONGO_INITDB_ROOT_USERNAME_FILE
+    - MONGO_INITDB_ROOT_PASSWORD_FILE
+    - MONGO_DB_ADMIN_USERNAME_FILE
+    - MONGO_DB_ADMIN_PASSWORD_FILE
+    - MONGO_REPLICA_ADMIN_USERNAME_FILE
+    - MONGO_REPLICA_ADMIN_PASSWORD_FILE
+    - MONGO_USER_USERNAME_FILE
+    - MONGO_USER_PASSWORD_FILE
 
 #docker network create -d overlay --attachable maxminded-ntw-swarm
 #docker stack up -c docker.yaml app --with-registry-auth
