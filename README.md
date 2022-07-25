@@ -283,38 +283,40 @@ Here's a basic example for an app that connects to you replica set:
   - `MONGO_RS_URL: mongo1:27017,mongo2:27017,mongo3:27017/maxminded?replicaSet=rs1`
 - It also assigns `maxminded-ntw-swarm` to its networks so that it can connect to it.
 
-
-    services:
-      maxminded-api:
-        image: some-api
-        secrets:
-          - MONGO_USER_USERNAME_FILE
-          - MONGO_USER_PASSWORD_FILE
-        environment:
-          MONGO_RS_URL: mongo1:27017,mongo2:27017,mongo3:27017/maxminded?replicaSet=rs1
-          MONGO_RS_USERNAME_FILE: /run/secrets/MONGO_USER_USERNAME_FILE
-          MONGO_RS_PASSWORD_FILE: /run/secrets/MONGO_USER_PASSWORD_FILE 
-        deploy:
-          replicas: 1
-        networks:
-          - maxminded-application
-          - maxminded-ntw-swarm
-
-    #List of secrets for Docker Swarm
+```
+services:
+  maxminded-api:
+    image: some-api
     secrets:
-      MONGO_USER_USERNAME_FILE:
-        external: true
-      MONGO_USER_PASSWORD_FILE:
-        external: true
-    
-    #List of networks for Docker Swarm
+      - MONGO_USER_USERNAME_FILE
+      - MONGO_USER_PASSWORD_FILE
+    environment:
+      MONGO_RS_URL: mongo1:27017,mongo2:27017,mongo3:27017/maxminded?replicaSet=rs1
+      MONGO_RS_USERNAME_FILE: /run/secrets/MONGO_USER_USERNAME_FILE
+      MONGO_RS_PASSWORD_FILE: /run/secrets/MONGO_USER_PASSWORD_FILE 
+    deploy:
+      replicas: 1
     networks:
-      maxminded-ntw-swarm:
-        external:
-          name: maxminded-ntw-swarm
-      maxminded-application:
-        external:
-          name: maxminded-application
+      - maxminded-application
+      - maxminded-ntw-swarm
+
+#List of secrets for Docker Swarm
+secrets:
+  MONGO_USER_USERNAME_FILE:
+    external: true
+  MONGO_USER_PASSWORD_FILE:
+    external: true
+
+#List of networks for Docker Swarm
+networks:
+  maxminded-ntw-swarm:
+    external:
+      name: maxminded-ntw-swarm
+  maxminded-application:
+    external:
+      name: maxminded-application
+```
+
 ## More reading
 - https://university.mongodb.com/
 - https://www.mongodb.com/docs/v5.0/administration/security-checklist/
