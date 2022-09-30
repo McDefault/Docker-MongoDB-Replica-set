@@ -2,6 +2,7 @@ version: "3.7"
 
 volumes:
   mongo-keyfile:
+    external: true
   mongo-data-1:
   mongo-data-2:
   mongo-data-3:
@@ -12,15 +13,15 @@ volumes:
 #service template
 x-mongodb:
   &mongodb
+  environment:
+    MONGO_INITDB_DATABASE: admin
+    MONGO_DATABASE: maxminded
   image: mongo:5.0.9
-  restart: unless-stopped
   labels:
     docker.service: mongodb
   command: --keyFile /data/keyfile/keyfile --replSet 'rs1'
   deploy:
     replicas: 1
-  env_file:
-    - .env
 
 #This is the base service for production and development
 #list of services
